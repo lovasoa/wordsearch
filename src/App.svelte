@@ -8,7 +8,7 @@
   let error = null;
   let input = null;
   let load = null;
-  const max_matches = 500;
+  let max_matches = 500;
 
   async function fetch_words(lang) {
     let r = await fetch(`dicts/${lang}.txt`);
@@ -25,7 +25,7 @@
     }
   }
 
-  function match_words(words, regex) {
+  function match_words(words, regex, max_matches) {
     matching.length = 0;
     for (var i = 0; i < words.length && matching.length < max_matches; i++) {
       let word = words[i];
@@ -36,7 +36,7 @@
   $: load = fetch_words(lang);
   $: make_regex(search, wholeword);
   $: input && input.setCustomValidity(error || "");
-  $: match_words(words, regex);
+  $: match_words(words, regex, max_matches);
 </script>
 
 <style>
@@ -50,15 +50,27 @@
   }
   input[type="text"] {
     flex: 1;
+    height: 35px;
+  }
+  select {
+    height: 35px;
   }
   ul {
     padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
   }
   li {
     display: inline-block;
     margin: 10px;
-    width: 130px;
+    min-width: 100px;
     overflow: hidden;
+  }
+  small input {
+    width: 44px;
+    height: 24px;
+    padding: 0;
   }
   .error {
     color: rgb(243, 89, 89);
@@ -74,7 +86,7 @@
   <input
     type="text"
     bind:value={search}
-    placeholder="Word search"
+    placeholder="Word search regex"
     bind:this={input} />
   <select bind:value={lang} title="Which dictionnary to search">
     <option>ru</option>
@@ -100,3 +112,9 @@
 {:catch error}
   <p class="error">{error.message}</p>
 {/await}
+
+<small>
+  Show at most
+  <input type="number" bind:value={max_matches} />
+  results.
+</small>
