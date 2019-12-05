@@ -7,6 +7,8 @@
   let wholeword = false;
   let error = null;
   let input = null;
+  let load = null;
+  const max_matches = 500;
 
   async function fetch_words(lang) {
     let r = await fetch(`dicts/${lang}.txt`);
@@ -22,10 +24,19 @@
       error = e;
     }
   }
-  $: fetch_words(lang);
+
+  function match_words(words, regex) {
+    matching.length = 0;
+    for (var i = 0; i < words.length && matching.length < max_matches; i++) {
+      let word = words[i];
+      if (regex.test(word)) matching.push(word);
+    }
+  }
+
+  $: load = fetch_words(lang);
   $: make_regex(search, wholeword);
   $: input && input.setCustomValidity(error || "");
-  $: matching = words.filter(w => w.match(regex));
+  $: match_words(words, regex);
 </script>
 
 <style>
@@ -43,6 +54,14 @@
   li {
     display: inline-block;
     margin: 10px;
+    width: 100px;
+    overflow: hidden;
+  }
+  .error {
+    color: rgb(243, 89, 89);
+  }
+  .info {
+    color: grey;
   }
 </style>
 
@@ -65,8 +84,16 @@
   </label>
 </form>
 
-<ul title="Words matching {regex}">
-  {#each matching as word (word)}
-    <li>{word}</li>
-  {/each}
-</ul>
+{#await load}
+  <p class="info">Loading...</p>
+{:then loaded}
+  <ul title="Words matching {regex}">
+    {#each matching as word (word)}
+      <li>{word}</li>
+    {:else}
+      <p class="info">No matching words</p>
+    {/each}
+  </ul>
+{:catch error}
+  <p class="error">{error.message}</p>
+{/await}
