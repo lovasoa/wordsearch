@@ -51,10 +51,13 @@
   input[type="text"] {
     flex: 1;
   }
+  ul {
+    padding: 0;
+  }
   li {
     display: inline-block;
     margin: 10px;
-    width: 100px;
+    width: 130px;
     overflow: hidden;
   }
   .error {
@@ -89,7 +92,7 @@
 {:then loaded}
   <ul title="Words matching {regex}">
     {#each matching as word (word)}
-      <li>{word}</li>
+      <li title={word}>{word}</li>
     {:else}
       <p class="info">No matching words</p>
     {/each}
