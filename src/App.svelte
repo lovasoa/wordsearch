@@ -54,6 +54,7 @@
   }
   select {
     height: 35px;
+    min-width: 50px;
   }
   ul {
     padding: 0;
