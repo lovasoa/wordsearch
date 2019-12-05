@@ -60,11 +60,12 @@
     <option>fr</option>
   </select>
   <label>
-    <input type="checkbox" bind:value={wholeword} />
+    <input type="checkbox" bind:checked={wholeword} />
     Whole word
   </label>
 </form>
-<ul>
+
+<ul title="Words matching {regex}">
   {#each matching as word (word)}
     <li>{word}</li>
   {/each}
