@@ -1,10 +1,13 @@
 <script>
-  let search = "";
-  let lang = "ru";
+  let url_params = new URL(document.location).searchParams || {
+    get: _ => null
+  };
+  let search = url_params.get("search") || "";
+  let lang = url_params.get("lang") || "ru";
+  let wholeword = !!url_params.get("wholeword");
   let words = [];
   let matching = [];
   let regex = /.*/;
-  let wholeword = false;
   let error = null;
   let input = null;
   let load = null;
@@ -48,7 +51,7 @@
   form > * {
     margin: 10px;
   }
-  input[type="text"] {
+  input[type="search"] {
     flex: 1;
     height: 35px;
   }
@@ -83,19 +86,20 @@
 
 <h1>Wordsearch</h1>
 
-<form>
+<form method="GET">
   <input
-    type="text"
+    type="search"
+    name="search"
     bind:value={search}
     placeholder="Word search regex"
     bind:this={input} />
-  <select bind:value={lang} title="Which dictionnary to search">
+  <select bind:value={lang} name="lang" title="Which dictionnary to search">
     <option>ru</option>
     <option>en</option>
     <option>fr</option>
   </select>
   <label>
-    <input type="checkbox" bind:checked={wholeword} />
+    <input type="checkbox" bind:checked={wholeword} name="wholeword" />
     Whole word
   </label>
 </form>
