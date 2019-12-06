@@ -13,6 +13,21 @@
   let load = null;
   let max_matches = 500;
 
+  function replace_url(search, lang, wholeword) {
+    try {
+      let params = new URLSearchParams({ lang: lang });
+      if (search) params.set("search", search);
+      if (wholeword) params.set("wholeword", "on");
+      window.history.replaceState(
+        null,
+        "RegEx word search: " + search,
+        "?" + params.toString()
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   async function fetch_words(lang) {
     let r = await fetch(`dicts/${lang}.txt`);
     let txt = await r.text();
@@ -40,6 +55,7 @@
   $: make_regex(search, wholeword);
   $: input && input.setCustomValidity(error || "");
   $: match_words(words, regex, max_matches);
+  $: replace_url(search, lang, wholeword);
 </script>
 
 <style>
