@@ -136,6 +136,6 @@
 
 <small>
   Show at most
-  <input type="number" bind:value={max_matches} />
+  <input type="number" min="1" max="10000" bind:value={max_matches} />
   results.
 </small>
