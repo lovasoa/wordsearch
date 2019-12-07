@@ -4,7 +4,7 @@
 
 A small web app to search dictionary words by entering a regex.
 
-https://regex-wordsearch.netlify.com/
+https://regex-wordsearch.netlify.com/?lang=en
 
 ## Technical details
 
