@@ -11,7 +11,7 @@
   let error = null;
   let input = null;
   let load = null;
-  let max_matches = 500;
+  let max_matches = 130;
 
   function replace_url(search, lang, wholeword) {
     try {
@@ -65,15 +65,21 @@
     align-items: center;
   }
   form > * {
-    margin: 10px;
+    margin: 1%;
   }
   input[type="search"] {
     flex: 1;
+    min-width: 25px;
     height: 35px;
   }
   select {
     height: 35px;
     min-width: 50px;
+    max-width: 15%;
+  }
+  label {
+    font-size: 0.8em;
+    max-width: 15%;
   }
   ul {
     padding: 0;
@@ -98,9 +104,22 @@
   .info {
     color: grey;
   }
+  #max_matches_config {
+    padding-bottom: 55px;
+  }
+  footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    padding: 10px;
+    padding-top: 20px;
+    background: linear-gradient(0deg, white 40%, transparent);
+    width: 100%;
+    font-size: 0.7em;
+  }
 </style>
 
-<h1>Wordsearch</h1>
+<h1>RegEx-WordSearch</h1>
 
 <form method="GET">
   <input
@@ -134,8 +153,21 @@
   <p class="error">{error.message}</p>
 {/await}
 
-<small>
+<small id="max_matches_config">
   Show at most
   <input type="number" min="1" max="10000" bind:value={max_matches} />
   results.
 </small>
+
+<footer>
+  <strong>RegEx-WordSearch</strong>
+  is a free software released by
+  <a href="https://github.com/lovasoa">@lovasoa</a>
+  under the
+  <a href="https://github.com/lovasoa/wordsearch/blob/master/LICENSE">
+    BSD3 license
+  </a>
+  .
+  <a href="https://github.com/lovasoa/wordsearch">View the source code</a>
+  .
+</footer>
