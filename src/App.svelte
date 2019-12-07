@@ -1,4 +1,5 @@
 <script>
+  import Info from "./Info.svelte";
   let url_params = new URL(document.location).searchParams || {
     get: _ => null
   };
@@ -121,6 +122,8 @@
 
 <h1>RegEx-WordSearch</h1>
 
+<Info />
+
 <form method="GET">
   <input
     type="search"
@@ -133,7 +136,8 @@
     <option>en</option>
     <option>fr</option>
   </select>
-  <label>
+  <label
+    title="Whether the pattern should match the whole word or any part of it">
     <input type="checkbox" bind:checked={wholeword} name="wholeword" />
     Whole word
   </label>
